@@ -1,22 +1,23 @@
-import Image from 'next/image';
-import { UpdateInvoice, DeleteInvoice } from '@/app/ui/invoices/buttons';
-import InvoiceStatus from '@/app/ui/invoices/status';
-import { formatDateToLocal, formatCurrency } from '@/app/lib/utils';
-import { fetchFilteredInvoices } from '@/app/lib/data';
+import Image from "next/image"
+import { UpdateInvoice, DeleteInvoice } from "@/app/ui/invoices/buttons"
+import InvoiceStatus from "@/app/ui/invoices/status"
+import { formatDateToLocal, formatCurrency } from "@/app/lib/utils"
+import { fetchFilteredInvoices } from "@/app/lib/data"
 
 export default async function InvoicesTable({
   query,
   currentPage,
 }: {
-  query: string;
-  currentPage: number;
+  query: string
+  currentPage: number
 }) {
-  const invoices = await fetchFilteredInvoices(query, currentPage);
+  const invoices = await fetchFilteredInvoices(query, currentPage)
 
   return (
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
+          {/* Div invisible */}
           <div className="md:hidden">
             {invoices?.map((invoice) => (
               <div
@@ -31,7 +32,7 @@ export default async function InvoicesTable({
                         className="mr-2 rounded-full"
                         width={28}
                         height={28}
-                        alt={`${invoice.name}'s profile picture`}
+                        alt={`${invoice.name}"s profile picture`}
                       />
                       <p>{invoice.name}</p>
                     </div>
@@ -58,19 +59,19 @@ export default async function InvoicesTable({
             <thead className="rounded-lg text-left text-sm font-normal">
               <tr>
                 <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
-                  Customer
+                  Cliente
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Email
+                  Correo
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Amount
+                  Monto
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Date
+                  Fecha
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Status
+                  Estado
                 </th>
                 <th scope="col" className="relative py-3 pl-6 pr-3">
                   <span className="sr-only">Edit</span>
@@ -90,7 +91,7 @@ export default async function InvoicesTable({
                         className="rounded-full"
                         width={28}
                         height={28}
-                        alt={`${invoice.name}'s profile picture`}
+                        alt={`${invoice.name}"s profile picture`}
                       />
                       <p>{invoice.name}</p>
                     </div>
@@ -120,5 +121,5 @@ export default async function InvoicesTable({
         </div>
       </div>
     </div>
-  );
+  )
 }
