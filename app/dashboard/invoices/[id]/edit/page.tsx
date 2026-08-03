@@ -3,6 +3,7 @@
 import InvoiceForm from "@/app/ui/invoices/form"
 import Breadcrumbs from "@/app/ui/invoices/breadcrumbs"
 import { fetchInvoiceById, fetchCustomers } from "@/app/lib/data"
+import { notFound } from "next/navigation"
 
 interface Props {
   params: Promise<{
@@ -17,6 +18,11 @@ export default async function Page({ params }: Props) {
     fetchInvoiceById(id),
     fetchCustomers(),
   ])
+
+  // Si la factura no existe en la DB, mostrar 404
+  if (!invoice) {
+    notFound()
+  }
 
   return (
     <main>

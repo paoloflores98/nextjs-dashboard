@@ -65,8 +65,8 @@ export async function fetchCardData() {
     //   SUM(CASE WHEN status = "pending" THEN amount ELSE 0 END) AS "pending"
     //   FROM invoices`
     const invoiceStatusPromise = sql`SELECT
-         SUM(CASE WHEN status = 'paid' THEN amount ELSE 0 END) AS "paid",
-         SUM(CASE WHEN status = 'pending' THEN amount ELSE 0 END) AS "pending"
+         SUM(CASE WHEN status = "paid" THEN amount ELSE 0 END) AS "paid",
+         SUM(CASE WHEN status = "pending" THEN amount ELSE 0 END) AS "pending"
          FROM invoices`
 
     const data = await Promise.all([
@@ -167,6 +167,8 @@ export async function fetchInvoiceById(id: string) {
       amount: invoice.amount / 100,
     }))
 
+    console.log(invoice) // Invoice es un array vacío []
+    
     return invoice[0]
   } catch (error) {
     console.error("Database Error:", error)

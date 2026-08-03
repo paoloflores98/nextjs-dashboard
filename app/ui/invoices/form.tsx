@@ -10,21 +10,48 @@ import {
 import Link from "next/link"
 import { Button } from "@/app/ui/button"
 import { createInvoice, updateInvoice } from "@/app/lib/actions"
+import { useActionState } from "react"
 
 interface Props {
   customers: CustomerField[]
   invoice?: InvoiceForm // Si existe, estamos en modo edición
 }
 
+interface ActionError {
+  message: string
+}
+
+type ActionState = ActionError | null
+type InvoiceAction = (prevState: ActionState, formData: FormData) => Promise<ActionState>
+
 export default function InvoiceForm({ customers, invoice }: Props) {
   const isEditMode = !!invoice
 
-  const formAction = isEditMode
-    ? updateInvoice.bind(null, invoice.id) // Se usa bind porque updateInvoice requiere el ID como primer argumento, es más seguro que crear un input oculto para el ID, ya que evita que el usuario lo modifique
-    : createInvoice
+  const invoiceAction: InvoiceAction = async (prevState, formData) => {
+    if (isEditMode && invoice) {
+      return await updateInvoice(invoice.id, formData) // Se usa bind porque updateInvoice requiere el ID como primer argumento, es más seguro que crear un input oculto para el ID, ya que evita que el usuario lo modifique
+    }
+
+    return await createInvoice(formData)
+  }
+
+  /* 
+  - state: contiene el estado de la acción (mensaje de error o null)
+  - formAction: es la función que se ejecutará al enviar el formulario
+  - isPending: indica si la acción está en curso (true) o no (false)
+  - invoiceAction: es la función que maneja la acción del formulario
+  - null: es el estado inicial de la acción, que en este caso es null (sin mensaje de error)
+  */
+  const [state, formAction, isPending] = useActionState(invoiceAction, null)
 
   return (
     <form action={formAction}>
+      {state?.message && (
+        <div className="mb-4 rounded-md bg-red-50 p-3 text-sm text-red-600">
+          {state.message}
+        </div>
+      )}
+
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         {/* Cliente */}
         <div className="mb-4">
@@ -122,8 +149,11 @@ export default function InvoiceForm({ customers, invoice }: Props) {
         >
           Cancelar
         </Link>
-        <Button type="submit">
+        {/* <Button type="submit">
           {isEditMode ? "Editar" : "Crear"}
+        </Button> */}
+        <Button type="submit" disabled={isPending}>
+          {isPending ? "Guardando..." : isEditMode ? "Editar" : "Crear"}
         </Button>
       </div>
     </form>

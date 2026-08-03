@@ -31,10 +31,19 @@ export async function createInvoice(formData: FormData) {
   const amountInCents = amount * 100
   const date = new Date().toISOString().split("T")[0] // Ej.: "2023-07-15"
 
-  await sql`
-    INSERT INTO invoices (customer_id, amount, status, date)
-    VALUES (${customerId}, ${amountInCents}, ${status}, ${date})
-  `
+  try {
+    await sql`
+      INSERT INTO invoices (customer_id, amount, status, date)
+      VALUES (${customerId}, ${amountInCents}, ${status}, ${date})
+    `
+
+  } catch (error) {
+    console.error("Error al crear la factura:", error)
+
+    return {
+      message: "Error de base de datos: No se pudo crear la factura.",
+    }
+  }
 
   revalidatePath("/dashboard/invoices") // Revalidar la ruta de la lista de facturas para reflejar los cambios
   redirect("/dashboard/invoices") // Redirigir al usuario de vuelta a la página
@@ -51,11 +60,20 @@ export async function updateInvoice(id: string, formData: FormData) {
   // Es una buena práctica almacenar los valores monetarios en centavos en la base de datos para eliminar los errores de coma flotante de JavaScript y garantizar una mayor precisión
   const amountInCents = amount * 100
 
-  await sql`
+  try {
+    await sql`
     UPDATE invoices
     SET customer_id = ${customerId}, amount = ${amountInCents}, status = ${status}
     WHERE id = ${id}
   `
+
+  } catch (error) {
+    console.error("Error al actualizar la factura:", error)
+
+    return {
+      message: "Error de base de datos: No se pudo actualizar la factura.",
+    }
+  }
 
   revalidatePath("/dashboard/invoices") // Revalidar la ruta de la lista de facturas para reflejar los cambios
   redirect("/dashboard/invoices") // Redirigir al usuario de vuelta a la página
@@ -63,6 +81,8 @@ export async function updateInvoice(id: string, formData: FormData) {
 
 // Eliminar factura
 export async function deleteInvoice(id: string) {
+  throw new Error("No se pudo eliminar la factura")
+
   await sql`DELETE FROM invoices WHERE id = ${id}`
 
   revalidatePath("/dashboard/invoices") // Revalidar la ruta de la lista de facturas para reflejar los cambios

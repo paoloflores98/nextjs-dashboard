@@ -36,27 +36,27 @@ export const generateYAxis = (revenue: Revenue[]) => {
 }
 
 export const generatePagination = (currentPage: number, totalPages: number) => {
-  // If the total number of pages is 7 or less,
-  // display all pages without any ellipsis.
+  // Si el número total de páginas es 7 o menos,
+  // muestra todas las páginas sin puntos suspensivos.
   if (totalPages <= 7) {
     return Array.from({ length: totalPages }, (_, i) => i + 1)
   }
 
-  // If the current page is among the first 3 pages,
-  // show the first 3, an ellipsis, and the last 2 pages.
+  // Si la página actual se encuentra entre las primeras tres páginas,
+  // muestra las tres primeras, tres puntos suspensivos y las dos últimas páginas.
   if (currentPage <= 3) {
     return [1, 2, 3, "...", totalPages - 1, totalPages]
   }
 
-  // If the current page is among the last 3 pages,
-  // show the first 2, an ellipsis, and the last 3 pages.
+  // Si la página actual se encuentra entre las últimas 3 páginas,
+  // muestra las primeras 2, tres puntos suspensivos y las últimas 3 páginas.
   if (currentPage >= totalPages - 2) {
     return [1, 2, "...", totalPages - 2, totalPages - 1, totalPages]
   }
 
-  // If the current page is somewhere in the middle,
-  // show the first page, an ellipsis, the current page and its neighbors,
-  // another ellipsis, and the last page.
+  // Si la página actual se encuentra en algún punto intermedio,
+  // muestra la primera página, tres puntos suspensivos, la página actual y las páginas adyacentes,
+  // otros tres puntos suspensivos y la última página.
   return [
     1,
     "...",
