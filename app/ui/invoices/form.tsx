@@ -149,9 +149,6 @@ export default function InvoiceForm({ customers, invoice }: Props) {
         >
           Cancelar
         </Link>
-        {/* <Button type="submit">
-          {isEditMode ? "Editar" : "Crear"}
-        </Button> */}
         <Button type="submit" disabled={isPending}>
           {isPending ? "Guardando..." : isEditMode ? "Editar" : "Crear"}
         </Button>
