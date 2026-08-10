@@ -17,11 +17,11 @@ export default function Page() {
           <p
             className={`text-xl text-gray-800 md:text-3xl md:leading-normal ${lusitana.className}`}
           >
-            <strong>Bienvenido a Acme.</strong> Este es el ejemplo del{" "}
+            <strong>Bienvenido a Acme.</strong> Un dashboard interactivo de {" "}
             <a href="https://nextjs.org/learn/" className="text-blue-500">
-              curso de aprendizaje de Next.js
+              facturación y gestión de clientes
             </a>
-            , presentado por Vercel.
+            .
           </p>
           <Link
             className="flex items-center gap-5 self-start rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400 md:text-base"

@@ -7,6 +7,12 @@ import {
 import { lusitana } from "@/app/ui/fonts"
 import { fetchCardData } from "@/app/lib/data"
 
+interface Props {
+  title: string
+  value: number | string
+  type: "invoices" | "customers" | "pending" | "collected"
+}
+
 const iconMap = {
   collected: BanknotesIcon,
   customers: UserGroupIcon,
@@ -24,29 +30,15 @@ export default async function CardWrapper() {
 
   return (
     <>
-      {/* NOTE: Uncomment this code in Chapter 9 */}
-
-      <Card title="Collected" value={totalPaidInvoices} type="collected" />
-      <Card title="Pending" value={totalPendingInvoices} type="pending" />
-      <Card title="Total Invoices" value={numberOfInvoices} type="invoices" />
-      <Card
-        title="Total Customers"
-        value={numberOfCustomers}
-        type="customers"
-      />
+      <Card title="Totales" value={totalPaidInvoices} type="collected" />
+      <Card title="Pendientes" value={totalPendingInvoices} type="pending" />
+      <Card title="Total de facturas" value={numberOfInvoices} type="invoices" />
+      <Card title="Total de clientes" value={numberOfCustomers} type="customers" />
     </>
   )
 }
 
-export function Card({
-  title,
-  value,
-  type,
-}: {
-  title: string
-  value: number | string
-  type: "invoices" | "customers" | "pending" | "collected"
-}) {
+export function Card({ title, value, type }: Props) {
   const Icon = iconMap[type]
 
   return (

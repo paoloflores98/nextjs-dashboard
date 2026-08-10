@@ -1,5 +1,7 @@
 "use server"
 
+import { signIn } from "@/auth"
+import { AuthError } from "next-auth"
 import { z } from "zod"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
@@ -124,4 +126,22 @@ export async function deleteInvoice(id: string) {
   await sql`DELETE FROM invoices WHERE id = ${id}`
 
   revalidatePath("/dashboard/invoices") // Revalidar la ruta de la lista de facturas para reflejar los cambios
+}
+
+// Iniciar sesión
+export async function authenticate(prevState: string | undefined, formData: FormData) {
+  try {
+    await signIn("credentials", formData) // Llamar a la función signIn con el proveedor Credentials y los datos del formulario
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case "CredentialsSignin":
+          return "Credenciales no válidas."
+        default:
+          return "Algo salió mal."
+      }
+    }
+
+    throw error
+  }
 }
