@@ -1,14 +1,17 @@
-// import Form from "@/app/ui/invoices/edit-form"
-// import EditInvoiceForm from "@/app/ui/invoices/edit-form"
 import InvoiceForm from "@/app/ui/invoices/form"
 import Breadcrumbs from "@/app/ui/invoices/breadcrumbs"
 import { fetchInvoiceById, fetchCustomers } from "@/app/lib/data"
 import { notFound } from "next/navigation"
+import { Metadata } from "next"
 
 interface Props {
   params: Promise<{
     id: string
   }>
+}
+
+export const metadata: Metadata = {
+  title: "Editar factura",
 }
 
 export default async function Page({ params }: Props) {

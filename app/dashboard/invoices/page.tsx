@@ -1,3 +1,4 @@
+import { Metadata } from "next"
 import Pagination from "@/app/ui/invoices/pagination"
 import Search from "@/app/ui/search"
 import Table from "@/app/ui/invoices/table"
@@ -13,6 +14,10 @@ interface PageProps {
     query?: string
     page?: string
   }>
+}
+
+export const metadata: Metadata = {
+  title: "Facturas",
 }
 
 export default async function Page(props: PageProps) {
